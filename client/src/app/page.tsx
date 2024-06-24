@@ -39,10 +39,10 @@ export default function Home() {
           </TableRow>
         </TableBody>
       </Table>
-      <h1>GlobalCss</h1>
-      <h2>GlobalCss</h2>
-      <h3>GlobalCss</h3>
-      <p>GlobalCss</p>
+      <h1 className="font-sans font-thin text-red-500">Thin</h1>
+      <h2 className="font-sans font-light text-blue-500">Light</h2>
+      <h3 className="font-sans font-medium text-pink-500">Medium</h3>
+      <p className="font-sans font-bold text-green-500">Bold</p>
     </main >
   );
 }

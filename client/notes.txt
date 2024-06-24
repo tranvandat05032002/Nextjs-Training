@@ -1,0 +1,2 @@
+- Layout shift: font không render kịp nên sử dụng font mặc định, và khi font chúng ta sử dụng nó render xong rồi
+thi nó có kích thước khác so với font mặc định nên từ đó gây ra trải nghiệm người dùng không được tốt.
