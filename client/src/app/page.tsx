@@ -1,4 +1,5 @@
 import { Table, TableCaption, TableRow, TableCell, TableHead, TableHeader, TableBody } from "@/components/ui/table"
+import Image from "next/image";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -43,6 +44,21 @@ export default function Home() {
       <h2 className="font-sans font-light text-blue-500">Light</h2>
       <h3 className="font-sans font-medium text-pink-500">Medium</h3>
       <p className="font-sans font-bold text-green-500">Bold</p>
+
+      <Image
+        src={"/heart_image.jpeg"}
+        alt="heart"
+        width={500}
+        height={500}
+        quality={100}
+      />
+      <Image
+        src={"https://images.pexels.com/photos/19345473/pexels-photo-19345473/free-photo-of-statue-in-roof-corner.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"}
+        width={500}
+        height={500}
+        alt="External image"
+        quality={100}
+      />
     </main >
   );
 }
