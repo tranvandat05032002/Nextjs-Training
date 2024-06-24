@@ -1,6 +1,12 @@
 import { Table, TableCaption, TableRow, TableCell, TableHead, TableHeader, TableBody } from "@/components/ui/table"
 import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+const isAuth = false;
 export default function Home() {
+  if(!isAuth) {
+    redirect("/login");
+  }
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Table>
@@ -52,13 +58,15 @@ export default function Home() {
         height={500}
         quality={100}
       />
-      <Image
-        src={"https://images.pexels.com/photos/19345473/pexels-photo-19345473/free-photo-of-statue-in-roof-corner.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"}
-        width={500}
-        height={500}
-        alt="External image"
-        quality={100}
-      />
+
+      <ul>
+        <li>
+          <Link href={"/register"}>Register</Link>
+        </li>
+        <li>
+          <Link href={"/login"}>Login</Link>
+        </li>
+      </ul>
     </main >
   );
 }
