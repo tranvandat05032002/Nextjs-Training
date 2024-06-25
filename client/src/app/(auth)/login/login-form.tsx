@@ -12,46 +12,69 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { RegisterBody, RegisterBodyType } from '@/schemaValidations/auth.schema'
+import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
 import envConfig from '@/config';
-const RegisterForm = () => {
+import { useToast } from "@/components/ui/use-toast"
+const LoginForm = () => {
+    const { toast } = useToast()
     // 1. Define your form.
-    const form = useForm<RegisterBodyType>({
-        resolver: zodResolver(RegisterBody),
+    const form = useForm<LoginBodyType>({
+        resolver: zodResolver(LoginBody),
         defaultValues: {
-            name: "",
             email: "",
             password: "",
-            confirmPassword: ""
         },
     })
     // 2. Define a submit handler.
-    async function onSubmit(values: RegisterBodyType) {
-        const result = await fetch(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/register`, {
-            method: 'POST',
-            body: JSON.stringify(values),
-            headers: {
-                'Content-Type': 'application/json'
+    async function onSubmit(values: LoginBodyType) {
+        try {
+            const result = await fetch(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/login`, {
+                method: 'POST',
+                body: JSON.stringify(values),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(async (res) => {
+                const payload = await res.json()
+                const data = {
+                    status: res.status,
+                    payload
+                }
+                if (!res.ok) {
+                    throw data
+                }
+                return data
+
+            });
+            toast({
+                description: result.payload.message,
+            })
+        } catch (error: any) {
+            const errors = error.payload.errors as {
+                field: string,
+                message: string
+            }[]
+            const status = error.status as number
+            if (status === 422) {
+                errors.forEach((error) => {
+                    form.setError(error.field as 'email' | 'password', {
+                        type: 'server',
+                        message: error.message
+                    })
+                })
             }
-        }).then((res) => res.json())
-        console.log(result)
+            else {
+                toast({
+                    title: 'Lỗi',
+                    description: error.payload.message,
+                    variant: 'destructive'
+                })
+            }
+        }
     }
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 flex-shrink-0 max-w-[400px] w-full" noValidate>
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Tên</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Nhập tên" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
                 <FormField
                     control={form.control}
                     name="email"
@@ -78,23 +101,10 @@ const RegisterForm = () => {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Nhập lại mật khẩu</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Nhập lại mật khẩu" type='password' {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit" className="!mt-5 w-full">Đăng ký</Button>
+                <Button type="submit" className="!mt-5 w-full">Đăng nhập</Button>
             </form>
         </Form>
     );
 };
 
-export default RegisterForm;
+export default LoginForm;

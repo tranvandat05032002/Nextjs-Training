@@ -5,7 +5,6 @@ export default function RootLayout({
 }>) {
     return (
         <main>
-            <div>This is main register</div>
             <section>{children}</section>
         </main>
     );
