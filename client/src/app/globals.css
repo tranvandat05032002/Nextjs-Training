@@ -77,14 +77,6 @@
   body {
     @apply bg-background text-foreground;
   }
-
-  /* Global Css */
-  h1,
-  h2,
-  h3,
-  p {
-    @apply text-red-600;
-  }
 }
 
 @layer utilities {

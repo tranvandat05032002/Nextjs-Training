@@ -1,34 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-// import localFont from "next/font/local"
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import Header from "@/components/header";
 
 const inter = Inter({
   subsets: ["vietnamese"],
 })
 
-// const myFont = localFont({
-//   src: [{
-//     path: "./Roboto/Roboto-Thin.ttf",
-//     weight: "100"
-//   },
-//   {
-//     path: "./Roboto/Roboto-Light.ttf",
-//     weight: "300"
-//   },
-//   {
-//     path: "./Roboto/Roboto-Medium.ttf",
-//     weight: "500"
-//   },
-//   {
-//     path: "./Roboto/Roboto-Bold.ttf",
-//     weight: "700"
-//   }
-//   ],
-//   display: "swap",
-//   variable: "--font-roboto"
-// })
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -49,6 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Header />
           {children}
         </ThemeProvider>
       </body>

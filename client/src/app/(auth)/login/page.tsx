@@ -5,9 +5,6 @@ import React from 'react';
 const LoginPage = () => {
     return (
         <div>
-            <ModeToggle />
-            this is page login
-            <Button></Button>
         </div>
     );
 };
