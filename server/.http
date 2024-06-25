@@ -1,0 +1,14 @@
+@baseUrl = http://127.0.0.1:4000
+
+GET {{baseUrl}}/test HTTP/1.1
+
+###
+POST {{baseUrl}}/auth/register HTTP/1,1
+Content-Type: application/json
+
+{
+  "name": "Trần Văn Đạt",
+  "email": "tranvandatevondev0503@gmail.com",
+  "password": "35701537Scss",
+  "confirmPassword": "35701537Scss"
+}
