@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input"
 import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
 import envConfig from '@/config';
 import { useToast } from "@/components/ui/use-toast"
+import { redirect } from 'next/navigation';
 const LoginForm = () => {
     const { toast } = useToast()
     // 1. Define your form.
@@ -49,6 +50,24 @@ const LoginForm = () => {
             toast({
                 description: result.payload.message,
             })
+            await fetch(`api/auth`, {
+                method: "POST",
+                body: JSON.stringify(result),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(async (res) => {
+                const payload = await res.json()
+                const data = {
+                    status: res.status,
+                    payload
+                }
+                if (!res.ok) {
+                    throw data
+                }
+                return data
+
+            });
         } catch (error: any) {
             const errors = error.payload.errors as {
                 field: string,
