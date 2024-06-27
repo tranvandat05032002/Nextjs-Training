@@ -9,6 +9,7 @@ const GetProfile = async () => {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${sessionToken?.value}`
+            // Cookie: `sessionToken=${sessionToken}`
         }
     }).then(async (res) => {
         const payload = await res.json()
