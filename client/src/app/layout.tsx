@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/toaster"
+import AppProvider from "./AppProvider";
+import { cookies } from "next/headers";
 
 const inter = Inter({
   subsets: ["vietnamese"],
@@ -20,6 +22,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookiesStore = cookies()
+  const initialSession = cookiesStore.get('sessionToken')?.value;
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning={true} className={inter.className}>
@@ -31,7 +35,9 @@ export default function RootLayout({
         >
           <Toaster />
           <Header />
-          {children}
+          <AppProvider initialSession={initialSession as string}>
+            {children}
+          </AppProvider>
         </ThemeProvider>
       </body>
     </html>

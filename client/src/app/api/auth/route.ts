@@ -8,10 +8,8 @@ export async function POST(request: Request) {
             status: 400
         })
     }
-    return Response.json({
-        res
-    }, {
+    return Response.json(res.payload, {
         status: 200,
-        headers: { 'Set-Cookie': `sessionToken=${sessionToken}; Path=/` }
+        headers: { 'Set-Cookie': `sessionToken=${sessionToken}; Path=/; HttpOnly` }
     })
 }
