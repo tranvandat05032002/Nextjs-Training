@@ -13,8 +13,13 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { RegisterBody, RegisterBodyType } from '@/schemaValidations/auth.schema'
-import envConfig from '@/config';
+import authApiRequest from '@/apiRequest/auth';
+import { toast } from '@/components/ui/use-toast';
+import { useAppContext } from '@/app/AppProvider';
+import { useRouter } from 'next/navigation';
 const RegisterForm = () => {
+    const { setSessionToken } = useAppContext()
+    const router = useRouter()
     // 1. Define your form.
     const form = useForm<RegisterBodyType>({
         resolver: zodResolver(RegisterBody),
@@ -27,14 +32,37 @@ const RegisterForm = () => {
     })
     // 2. Define a submit handler.
     async function onSubmit(values: RegisterBodyType) {
-        const result = await fetch(`${envConfig.NEXT_PUBLIC_API_ENDPOINT}/auth/register`, {
-            method: 'POST',
-            body: JSON.stringify(values),
-            headers: {
-                'Content-Type': 'application/json'
+        try {
+            const result = await authApiRequest.register(values)
+            toast({
+                description: result.payload.message,
+            })
+            await authApiRequest.auth({ sessionToken: result.payload.data.token });
+            setSessionToken(result.payload.data.token)
+            router.push('/me')
+        } catch (error: any) {
+            const errors = error.payload.errors as {
+                field: string,
+                message: string
+            }[]
+            const status = error.status as number
+            if (status === 422) {
+                errors.forEach((error) => {
+                    form.setError(error.field as 'name' | 'email' | 'password' | 'confirmPassword', {
+                        type: 'server',
+                        message: error.message
+                    })
+                })
             }
-        }).then((res) => res.json())
-        console.log(result)
+            else {
+                toast({
+                    title: 'Lỗi',
+                    description: error.payload.message,
+                    variant: 'destructive'
+                })
+            }
+        }
+
     }
     return (
         <Form {...form}>
