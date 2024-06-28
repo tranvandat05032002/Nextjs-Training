@@ -1,22 +1,20 @@
 'use client'
 import React from "react";
-import { useAppContext } from "../AppProvider";
-import envConfig from "@/config";
 import accountApiRequest from "@/apiRequest/account";
+import { clientSessionToken } from "@/lib/http";
 
 const Profile = () => {
-    const { sessionToken } = useAppContext()
     const [user, setUser] = React.useState({
         name: '',
         email: ''
     })
     React.useEffect(() => {
         const fetchProfile = async () => {
-            const result = await accountApiRequest.me(sessionToken)
+            const result = await accountApiRequest.meClient()
             setUser(result?.payload?.data);
         }
         fetchProfile();
-    }, [sessionToken])
+    }, [])
     return (
         <div>
             Profile fetch next client:

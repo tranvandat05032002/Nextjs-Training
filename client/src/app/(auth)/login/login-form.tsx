@@ -13,14 +13,12 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
-import envConfig from '@/config';
 import { useToast } from "@/components/ui/use-toast"
-import { redirect, useRouter } from 'next/navigation';
-import { useAppContext } from '@/app/AppProvider';
+import { useRouter } from 'next/navigation';
 import authApiRequest from '@/apiRequest/auth';
+import { clientSessionToken } from '@/lib/http';
 const LoginForm = () => {
     const { toast } = useToast()
-    const { setSessionToken } = useAppContext()
     const router = useRouter()
     // 1. Define your form.
     const form = useForm<LoginBodyType>({
@@ -38,7 +36,6 @@ const LoginForm = () => {
                 description: result.payload.message,
             })
             await authApiRequest.auth({ sessionToken: result.payload.data.token });
-            setSessionToken(result.payload.data.token)
             router.push('/me')
         } catch (error: any) {
             const errors = error.payload.errors as {

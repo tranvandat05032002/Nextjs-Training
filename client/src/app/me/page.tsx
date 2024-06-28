@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import React from 'react';
 import Profile from './profile';
 import accountApiRequest from '@/apiRequest/account';
+import { clientSessionToken } from '@/lib/http';
 
 const GetProfile = async () => {
     const sessionToken = cookies().get('sessionToken');
