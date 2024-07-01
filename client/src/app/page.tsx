@@ -1,10 +1,11 @@
+import ButtonLogout from "@/components/button-logout";
 import { Table, TableCaption, TableRow, TableCell, TableHead, TableHeader, TableBody } from "@/components/ui/table"
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 const isAuth = false;
 export default function Home() {
-  if(!isAuth) {
+  if (!isAuth) {
     redirect("/login");
   }
   return (

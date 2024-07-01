@@ -30,3 +30,11 @@ export const handleErrorApi = ({ error, setError, duration = 5000 }: {
     })
   }
 }
+/**
+ * Xóa đi ký tự '/' đầu tiên của path
+ * @param {string} path
+ * @returns {string} - Chuỗi theo định dạng 'path/segment/segment'
+ */
+export const normalizePath = (path: string) => {
+  return path.startsWith('/') ? path.slice(1) : path
+}

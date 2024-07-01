@@ -1,6 +1,7 @@
 import React from 'react';
 import { ModeToggle } from './mode-toggle';
 import Link from 'next/link';
+import ButtonLogout from './button-logout';
 
 const Header = () => {
     const user = {
@@ -20,9 +21,9 @@ const Header = () => {
                                 Xin chào <strong>{user.name}</strong>
                             </Link>
                         </li>
-                        {/* <li>
-                <ButtonLogout />
-              </li> */}
+                        <li>
+                            <ButtonLogout />
+                        </li>
                     </>
                 ) : (
                     <>
