@@ -21,6 +21,7 @@ import { handleErrorApi } from '@/lib/utils';
 const LoginForm = () => {
     const { toast } = useToast()
     const router = useRouter()
+    const [loading, setLoading] = React.useState(false)
     // 1. Define your form.
     const form = useForm<LoginBodyType>({
         resolver: zodResolver(LoginBody),
@@ -31,6 +32,8 @@ const LoginForm = () => {
     })
     // 2. Define a submit handler.
     async function onSubmit(values: LoginBodyType) {
+        if (loading) return;
+        setLoading(true)
         try {
             const result = await authApiRequest.login(values)
             toast({
@@ -39,7 +42,10 @@ const LoginForm = () => {
             await authApiRequest.auth({ sessionToken: result.payload.data.token });
             router.push('/me')
         } catch (error: any) {
-            handleErrorApi({error, setError: form.setError})
+            handleErrorApi({ error, setError: form.setError })
+        }
+        finally {
+            setLoading(false)
         }
     }
     return (
