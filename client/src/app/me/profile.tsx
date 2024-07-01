@@ -2,6 +2,7 @@
 import React from "react";
 import accountApiRequest from "@/apiRequest/account";
 import { clientSessionToken } from "@/lib/http";
+import { handleErrorApi } from "@/lib/utils";
 
 const Profile = () => {
     const [user, setUser] = React.useState({
@@ -10,8 +11,12 @@ const Profile = () => {
     })
     React.useEffect(() => {
         const fetchProfile = async () => {
-            const result = await accountApiRequest.meClient()
-            setUser(result?.payload?.data);
+            try {
+                const result = await accountApiRequest.meClient()
+                setUser(result?.payload?.data);
+            } catch (error) {
+                handleErrorApi({ error })
+            }
         }
         fetchProfile();
     }, [])
