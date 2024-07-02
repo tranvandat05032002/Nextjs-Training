@@ -6,6 +6,7 @@ type CustomOptions = Omit<RequestInit, 'method'> & {
     baseUrl?: string | undefined
 }
 const ENTITY_ERROR_STATUS = 422
+const AUTHENTICATION_ERROR_STATUS = 401
 type EntityErrorPayload = {
     message: string
     errors: {
@@ -34,6 +35,7 @@ export class EntityError extends HttpError {
         this.payload = payload
     }
 }
+export const isClient = () => typeof window !== 'undefined'
 class SessionToken {
     private token = ''
     get value() {
@@ -41,13 +43,14 @@ class SessionToken {
     }
     set value(newToken: string) {
         // Nếu gọi method này ở phía server thì sẽ bị lỗi
-        if (typeof window === 'undefined') {
+        if (!isClient()) {
             throw new Error('Cannot set token on server side')
         }
         this.token = newToken;
     }
 }
 export const clientSessionToken = new SessionToken();
+let clientLogoutRequest: any | Promise<any> = null
 const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, options?: CustomOptions | undefined) => {
     const body = options?.body ? JSON.stringify(options.body) : undefined
     const baseHeaders = {
@@ -71,12 +74,29 @@ const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url:
         status: res.status,
         payload
     }
+    // interceptors fetch
     if (!res.ok) {
         if (res.status === ENTITY_ERROR_STATUS) {
             throw new EntityError(data as {
                 status: 422
                 payload: EntityErrorPayload
             })
+        }
+        else if (res.status === AUTHENTICATION_ERROR_STATUS) {
+            if (isClient()) {
+                if (!clientLogoutRequest) {
+                    clientLogoutRequest = fetch('api/auth/logout', {
+                        method: 'POST',
+                        body: JSON.stringify({ force: true }),
+                        headers: {
+                            ...baseHeaders
+                        }
+                    })
+                    await clientLogoutRequest
+                    clientSessionToken.value = ''
+                    location.href = '/login'
+                }
+            }
         }
         else {
             throw new HttpError(data)

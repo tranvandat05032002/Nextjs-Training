@@ -1,5 +1,5 @@
 'use client'
-import { clientSessionToken } from "@/lib/http"
+import { clientSessionToken, isClient } from "@/lib/http"
 import React from "react"
 
 const AppContext = React.createContext({
@@ -12,7 +12,7 @@ export default function AppProvider({ children, initialSession = '' }: {
 }) {
     React.useState(() => {
         // chạy môi trường build nên nó không còn là client-component --> không có object window
-        if(typeof window !== 'undefined') {
+        if (isClient()) {
             clientSessionToken.value = initialSession
         }
     })
