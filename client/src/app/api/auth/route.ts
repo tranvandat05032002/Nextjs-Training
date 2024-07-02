@@ -1,3 +1,11 @@
+import { decodedJWT } from "@/lib/utils";
+
+type PayloadJWT = {
+    userId: number,
+    tokenType: string,
+    iat: number,
+    exp: number
+}
 export async function POST(request: Request) {
     const res = await request.json();
     const sessionToken = res?.sessionToken as string;
@@ -8,8 +16,10 @@ export async function POST(request: Request) {
             status: 400
         })
     }
+    const payload = decodedJWT<PayloadJWT>(sessionToken)
+    const expiresDate = new Date(payload.exp * 1000).toUTCString()
     return Response.json(res, {
         status: 200,
-        headers: { 'Set-Cookie': `sessionToken=${sessionToken}; Path=/; HttpOnly` }
+        headers: { 'Set-Cookie': `sessionToken=${sessionToken}; Path=/; HttpOnly; Expires=${expiresDate}; SameSite=Lax; Secure` }
     })
 }

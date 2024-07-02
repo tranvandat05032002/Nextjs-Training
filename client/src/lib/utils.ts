@@ -3,6 +3,7 @@ import { UseFormSetError } from "react-hook-form"
 import { twMerge } from "tailwind-merge"
 import { EntityError } from "./http"
 import { toast } from "@/components/ui/use-toast"
+import jwt from 'jsonwebtoken'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -37,4 +38,10 @@ export const handleErrorApi = ({ error, setError, duration = 5000 }: {
  */
 export const normalizePath = (path: string) => {
   return path.startsWith('/') ? path.slice(1) : path
+}
+/**
+ * decoded chuỗi jwt
+ */
+export const decodedJWT = <Payload = any> (token: string) => {
+  return jwt.decode(token) as Payload
 }

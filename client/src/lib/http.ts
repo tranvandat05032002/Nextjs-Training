@@ -1,6 +1,7 @@
 import envConfig from "@/config";
 import { LoginResType } from "@/schemaValidations/auth.schema";
 import { normalizePath } from "./utils";
+import { redirect } from "next/navigation";
 
 type CustomOptions = Omit<RequestInit, 'method'> & {
     baseUrl?: string | undefined
@@ -83,6 +84,7 @@ const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url:
             })
         }
         else if (res.status === AUTHENTICATION_ERROR_STATUS) {
+            // next client
             if (isClient()) {
                 if (!clientLogoutRequest) {
                     clientLogoutRequest = fetch('api/auth/logout', {
@@ -94,8 +96,14 @@ const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url:
                     })
                     await clientLogoutRequest
                     clientSessionToken.value = ''
+                    clientLogoutRequest = null
                     location.href = '/login'
                 }
+            }
+            // next server
+            else {
+                const sessionToken = (options?.headers as any).Authorization.split('Bearer ')[1]
+                redirect(`/logout?sessionToken=${sessionToken}`)
             }
         }
         else {
