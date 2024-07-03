@@ -39,6 +39,7 @@ export class EntityError extends HttpError {
 export const isClient = () => typeof window !== 'undefined'
 class SessionToken {
     private token = ''
+    private _expiresAt = new Date().toISOString()
     get value() {
         return this.token;
     }
@@ -48,6 +49,15 @@ class SessionToken {
             throw new Error('Cannot set token on server side')
         }
         this.token = newToken;
+    }
+    get expiresAt() {
+        return this._expiresAt;
+    }
+    set expiresAt(expiresAt: string) {
+        if (!isClient()) {
+            throw new Error('Cannot set token on server side')
+        }
+        this._expiresAt = expiresAt
     }
 }
 export const clientSessionToken = new SessionToken();
@@ -96,6 +106,7 @@ const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url:
                     })
                     await clientLogoutRequest
                     clientSessionToken.value = ''
+                    clientSessionToken.expiresAt = new Date().toISOString()
                     clientLogoutRequest = null
                     location.href = '/login'
                 }
@@ -112,9 +123,11 @@ const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url:
     }
     if (['auth/login', 'auth/register'].some((item) => item === normalizePath(url))) {
         clientSessionToken.value = (payload as LoginResType).data.token
+        clientSessionToken.expiresAt = (payload as LoginResType).data.expiresAt
     }
     else if ('/auth/logout' === normalizePath(url)) {
         clientSessionToken.value = ''
+        clientSessionToken.expiresAt = new Date().toISOString()
     }
 
     return data;
