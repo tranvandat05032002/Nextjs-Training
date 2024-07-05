@@ -28,6 +28,9 @@ const Header = () => {
                 ) : (
                     <>
                         <li>
+                            <Link href='/products'>Sản phẩm</Link>
+                        </li>
+                        <li>
                             <Link href='/login'>Đăng nhập</Link>
                         </li>
                         <li>
