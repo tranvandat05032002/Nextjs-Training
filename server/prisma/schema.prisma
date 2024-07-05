@@ -33,7 +33,7 @@ model Product {
   image       String
   name        String
   description String
-  price       Int
+  price       BigInt
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
