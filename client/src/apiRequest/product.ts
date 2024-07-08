@@ -1,10 +1,11 @@
 import http from "@/lib/http"
-import { CreateProductBodyType, ProductListResType } from "@/schemaValidations/product.schema"
+import { CreateProductBodyType, ProductListResType, ProductResType } from "@/schemaValidations/product.schema"
 
 const productApiRequest = {
     getList: () => http.get<ProductListResType>('/products'),
+    getDetail: (slug: Number) => http.get<ProductResType>(`/products/${slug}`),
     create: (body: CreateProductBodyType) => http.post('/products', body),
-    uploadImage: (body: FormData) => http.post<{message: string, data: string}>('/media/upload', body)
+    uploadImage: (body: FormData) => http.post<{ message: string, data: string }>('/media/upload', body)
 }
 
 export default productApiRequest
