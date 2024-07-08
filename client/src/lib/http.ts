@@ -63,10 +63,10 @@ class SessionToken {
 export const clientSessionToken = new SessionToken();
 let clientLogoutRequest: any | Promise<any> = null
 const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, options?: CustomOptions | undefined) => {
-    const body = options?.body 
-            ? 
-                options.body instanceof FormData ? options.body : JSON.stringify(options.body) 
-            : undefined
+    const body = options?.body
+        ?
+        options.body instanceof FormData ? options.body : JSON.stringify(options.body)
+        : undefined
     const baseHeaders = body instanceof FormData ? {
         Authorization: clientSessionToken.value ? `Bearer ${clientSessionToken.value}` : ''
     } : {

@@ -45,13 +45,14 @@ const ProductAddForm = () => {
             const uploadImageResult = await productApiRequest.uploadImage(formData)
             const imageUrl = uploadImageResult.payload.data
             const result = await productApiRequest.create({
-              ...values,
-              image: imageUrl
+                ...values,
+                image: imageUrl
             });
             toast({
                 description: (result.payload as any).message,
             })
             router.push('/products')
+            router.refresh()
         } catch (error: any) {
             handleErrorApi({ error, setError: form.setError })
         }
@@ -62,8 +63,8 @@ const ProductAddForm = () => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(createProduct, (error) => {
-              console.log(error)
-              console.log(form.getValues('image'))
+                console.log(error)
+                console.log(form.getValues('image'))
             })} className="space-y-2 flex-shrink-0 max-w-[400px] w-full" noValidate>
                 <FormField
                     control={form.control}
@@ -72,7 +73,7 @@ const ProductAddForm = () => {
                         <FormItem>
                             <FormLabel>Tên Sản Phẩm</FormLabel>
                             <FormControl>
-                                <Input placeholder="Nhập tên" {...field} type='text'/>
+                                <Input placeholder="Nhập tên" {...field} type='text' />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -112,41 +113,41 @@ const ProductAddForm = () => {
                             <FormLabel>Ảnh mô tả</FormLabel>
                             <FormControl>
                                 <Input type='file' ref={inputRef} accept='image/*' onChange={(e) => {
-                                  const file = e.target?.files?.[0];
-                                  if(file) {
-                                    setFile(file)
-                                    field.onChange('http://localhost:3000/' + file.name)
-                                  }
-                                }}/> 
+                                    const file = e.target?.files?.[0];
+                                    if (file) {
+                                        setFile(file)
+                                        field.onChange('http://localhost:3000/' + file.name)
+                                    }
+                                }} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
                 {(file) && (
-          <div>
-            <Image
-              src={URL.createObjectURL(file)}
-              width={128}
-              height={128}
-              alt='preview'
-              className='w-32 h-32 object-cover'
-            />
-            <Button
-              type='button'
-              variant={'destructive'}
-              size={'sm'}
-              onClick={() => {
-                setFile(null)
-                form.setValue('image', '')
-                if(inputRef.current) {
-                  inputRef.current.value = ''
-                }
-              }}
-            >
-              Xóa hình ảnh
-            </Button>
-          </div>)}
+                    <div>
+                        <Image
+                            src={URL.createObjectURL(file)}
+                            width={128}
+                            height={128}
+                            alt='preview'
+                            className='w-32 h-32 object-cover'
+                        />
+                        <Button
+                            type='button'
+                            variant={'destructive'}
+                            size={'sm'}
+                            onClick={() => {
+                                setFile(null)
+                                form.setValue('image', '')
+                                if (inputRef.current) {
+                                    inputRef.current.value = ''
+                                }
+                            }}
+                        >
+                            Xóa hình ảnh
+                        </Button>
+                    </div>)}
                 <Button type="submit" className="!mt-5 w-full">Thêm sản phẩm</Button>
             </form>
         </Form>
