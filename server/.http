@@ -41,3 +41,5 @@ Authorization: Basic + 1116d3c1aee14acb88889bfa624984b4:73dbe503985d4fa3b5747249
 GET https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n HTTP/1.1
 Authorization: Bearer BQDBNVufVG7_9T8wZjoGBD5vGNdQYrBdxkLlGzhjyoSOOU6_VOSxiPPMALNIPg0LN-CyDosat8_Pv3miP4Y7TStAnDi709_VpwVVQbUwjOQdXl1JzdkoeXowg_ZrPqcdMPwtgzaTdpR57Ek28VHXDoCjpu4fJz54vBzNA66PYrwpkE4EmRsnhveiwkteDtxSpxkUCd_eu2IZU2_PBx_34d6bEuJaSLkShnRaBN3crc4R4zg0fVWNWJczFsMHl2geLYEzwnHkKGWGq6qcP7qPNJRG
 
+###
+GET {{baseUrl}}/products HTTP/1.1
