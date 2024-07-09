@@ -40,7 +40,8 @@ const LoginForm = () => {
             toast({
                 description: result.payload.message,
             })
-            router.push('/me')
+            router.push('/')
+            router.refresh()
         } catch (error: any) {
             handleErrorApi({ error, setError: form.setError })
         }
@@ -71,7 +72,7 @@ const LoginForm = () => {
                         <FormItem>
                             <FormLabel>Mật khẩu</FormLabel>
                             <FormControl>
-                                <Input placeholder="Nhập mật khẩu" type='password' {...field} />
+                                <Input autoComplete='off' placeholder="Nhập mật khẩu" type='password' {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

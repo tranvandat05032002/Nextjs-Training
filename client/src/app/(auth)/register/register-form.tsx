@@ -80,7 +80,7 @@ const RegisterForm = () => {
                         <FormItem>
                             <FormLabel>Mật khẩu</FormLabel>
                             <FormControl>
-                                <Input placeholder="Nhập mật khẩu" type='password' {...field} />
+                                <Input autoComplete='off' placeholder="Nhập mật khẩu" type='password' {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -93,7 +93,7 @@ const RegisterForm = () => {
                         <FormItem>
                             <FormLabel>Nhập lại mật khẩu</FormLabel>
                             <FormControl>
-                                <Input placeholder="Nhập lại mật khẩu" type='password' {...field} />
+                                <Input autoComplete='off' placeholder="Nhập lại mật khẩu" type='password' {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
