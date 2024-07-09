@@ -12,7 +12,7 @@ const GetProfile = async () => {
         <div>
             <div>Account: {result.payload.data.name}</div>
             <div>Email: {result.payload.data.email}</div>
-            <ProfileForm profile={result.payload.data}/>
+            <ProfileForm profile={result.payload.data} />
         </div>
     );
 };

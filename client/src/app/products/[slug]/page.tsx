@@ -1,9 +1,10 @@
 import productApiRequest from '@/apiRequest/product';
 import Image from 'next/image';
 import React from 'react';
+import ProductAddForm from '../_component/product-add-form';
 
 const ProductDetail = async ({ params }: { params: { slug: Number } }) => {
-    let product = null
+    let product = undefined
     try {
         const { payload } = await productApiRequest.getDetail(Number(params.slug))
         product = payload.data
@@ -23,6 +24,7 @@ const ProductDetail = async ({ params }: { params: { slug: Number } }) => {
                 <h3>{product.name}</h3>
                 <div>{product.price}</div>
             </div>}
+            <ProductAddForm product={product} />
         </div>
     );
 };

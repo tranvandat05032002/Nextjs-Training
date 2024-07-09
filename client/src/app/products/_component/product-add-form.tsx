@@ -15,11 +15,12 @@ import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from 'next/navigation';
 import { handleErrorApi } from '@/lib/utils';
-import { CreateProductBody, CreateProductBodyType } from '@/schemaValidations/product.schema';
+import { CreateProductBody, CreateProductBodyType, ProductResType, UpdateProductBodyType } from '@/schemaValidations/product.schema';
 import productApiRequest from '@/apiRequest/product';
 import { Textarea } from '@/components/ui/textarea';
 import Image from 'next/image';
-const ProductAddForm = () => {
+type Product = ProductResType['data']
+const ProductAddForm = ({ product }: { product?: Product }) => {
     const { toast } = useToast()
     const router = useRouter()
     const [file, setFile] = React.useState<File | null>(null)
@@ -29,15 +30,15 @@ const ProductAddForm = () => {
     const form = useForm<CreateProductBodyType>({
         resolver: zodResolver(CreateProductBody),
         defaultValues: {
-            name: "",
-            price: 0,
-            description: "",
-            image: ""
+            name: product?.name ?? '',
+            price: product?.price ?? 0,
+            description: product?.description ?? '',
+            image: product?.image ?? ''
         },
     })
+    const image = form.watch('image')
     // 2. Define a submit handler.
     async function createProduct(values: CreateProductBodyType) {
-        if (loading) return;
         setLoading(true)
         try {
             const formData = new FormData()
@@ -51,7 +52,32 @@ const ProductAddForm = () => {
             toast({
                 description: (result.payload as any).message,
             })
-            router.push('/products')
+        } catch (error: any) {
+            handleErrorApi({ error, setError: form.setError })
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+    async function updateProduct(_values: UpdateProductBodyType) {
+        if (!product) return;
+        setLoading(true)
+        let values = _values
+        try {
+            if (file) {
+                const formData = new FormData()
+                formData.append('file', file as Blob)
+                const uploadImageResult = await productApiRequest.uploadImage(formData)
+                const imageUrl = uploadImageResult.payload.data
+                values = {
+                    ..._values,
+                    image: imageUrl
+                }
+            }
+            const result = await productApiRequest.update(product.id, values);
+            toast({
+                description: (result.payload as any).message,
+            })
             router.refresh()
         } catch (error: any) {
             handleErrorApi({ error, setError: form.setError })
@@ -60,9 +86,18 @@ const ProductAddForm = () => {
             setLoading(false)
         }
     }
+    async function onSubmit(values: CreateProductBodyType) {
+        if (loading) return;
+        if (product) {
+            await updateProduct(values)
+        }
+        else {
+            await createProduct(values)
+        }
+    }
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(createProduct, (error) => {
+            <form onSubmit={form.handleSubmit(onSubmit, (error) => {
                 console.log(error)
                 console.log(form.getValues('image'))
             })} className="space-y-2 flex-shrink-0 max-w-[400px] w-full" noValidate>
@@ -124,10 +159,10 @@ const ProductAddForm = () => {
                         </FormItem>
                     )}
                 />
-                {(file) && (
+                {(file || image) && (
                     <div>
                         <Image
-                            src={URL.createObjectURL(file)}
+                            src={file ? URL.createObjectURL(file) : image}
                             width={128}
                             height={128}
                             alt='preview'
@@ -148,7 +183,7 @@ const ProductAddForm = () => {
                             Xóa hình ảnh
                         </Button>
                     </div>)}
-                <Button type="submit" className="!mt-5 w-full">Thêm sản phẩm</Button>
+                <Button type="submit" className="!mt-5 w-full">{product ? "Cập nhật sản phẩm" : "Thêm sản phẩm"}</Button>
             </form>
         </Form>
     );
