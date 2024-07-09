@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from 'next/navigation';
-import { handleErrorApi } from '@/lib/utils';
+import { formatNumber, handleErrorApi } from '@/lib/utils';
 import { CreateProductBody, CreateProductBodyType, ProductResType, UpdateProductBodyType } from '@/schemaValidations/product.schema';
 import productApiRequest from '@/apiRequest/product';
 import { Textarea } from '@/components/ui/textarea';
@@ -26,7 +26,6 @@ const ProductAddForm = ({ product }: { product?: Product }) => {
     const [file, setFile] = React.useState<File | null>(null)
     const inputRef = React.useRef<HTMLInputElement | null>(null)
     const [loading, setLoading] = React.useState(false)
-    // 1. Define your form.
     const form = useForm<CreateProductBodyType>({
         resolver: zodResolver(CreateProductBody),
         defaultValues: {
@@ -37,7 +36,6 @@ const ProductAddForm = ({ product }: { product?: Product }) => {
         },
     })
     const image = form.watch('image')
-    // 2. Define a submit handler.
     async function createProduct(values: CreateProductBodyType) {
         setLoading(true)
         try {
@@ -52,6 +50,8 @@ const ProductAddForm = ({ product }: { product?: Product }) => {
             toast({
                 description: (result.payload as any).message,
             })
+            router.push('/products')
+            router.refresh()
         } catch (error: any) {
             handleErrorApi({ error, setError: form.setError })
         }

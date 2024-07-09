@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge"
 import { EntityError } from "./http"
 import { toast } from "@/components/ui/use-toast"
 import jwt from 'jsonwebtoken'
+import { format, toDate } from "date-fns"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -42,6 +43,12 @@ export const normalizePath = (path: string) => {
 /**
  * decoded chuỗi jwt
  */
-export const decodedJWT = <Payload = any> (token: string) => {
+export const decodedJWT = <Payload = any>(token: string) => {
   return jwt.decode(token) as Payload
+}
+export const formatNumber = (number: number) => {
+  return number.toLocaleString('vi-VN')
+}
+export const formatDate = (date: Date) => {
+  return format(date, 'dd/MM/yyyy HH:mm')
 }

@@ -14,6 +14,7 @@ import productApiRequest from "@/apiRequest/product";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { formatDate, formatNumber } from "@/lib/utils";
 export default async function ProductListPage() {
     const { payload } = await productApiRequest.getList()
     const productList = payload.data
@@ -40,8 +41,8 @@ export default async function ProductListPage() {
                                 <Image src={prod.image} className="rounded-sm" alt={prod.description} width={50} height={50} />
                             </TableCell>
                             <TableCell>{prod.name}</TableCell>
-                            <TableCell>{prod.price}</TableCell>
-                            <TableCell>{prod.createdAt.toString()}</TableCell>
+                            <TableCell>{formatNumber(prod.price)} VNĐ</TableCell>
+                            <TableCell>{formatDate(prod.createdAt)}</TableCell>
                             <TableCell className="text-right">
                                 <div className="flex justify-end gap-x-1">
                                     <Link href={`/products/${prod.id}`}>

@@ -2,7 +2,9 @@ import http from "@/lib/http"
 import { CreateProductBodyType, ProductListResType, ProductResType, UpdateProductBodyType } from "@/schemaValidations/product.schema"
 
 const productApiRequest = {
-    getList: () => http.get<ProductListResType>('/products'),
+    getList: () => http.get<ProductListResType>('/products', {
+        cache: 'no-store'
+    }),
     getDetail: (slug: Number) => http.get<ProductResType>(`/products/${slug}`, {
         cache: 'no-store'
     }
