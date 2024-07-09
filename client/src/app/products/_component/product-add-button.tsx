@@ -4,9 +4,9 @@ import React from 'react';
 
 const ProductAddButton = () => {
     return (
-    <Link href={'/products/add'}>
-        <Button variant={'secondary'}>Thêm sản phẩm</Button>
-    </Link>
+        <Link href={'/products/add'}>
+            <Button variant={'secondary'}>Thêm sản phẩm</Button>
+        </Link>
     );
 };
 
