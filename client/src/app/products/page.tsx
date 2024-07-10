@@ -16,12 +16,16 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { formatDate, formatNumber } from "@/lib/utils";
 import DeleteProduct from "./_component/product-delete-button";
+import { cookies } from "next/headers";
 export default async function ProductListPage() {
     const { payload } = await productApiRequest.getList()
     const productList = payload.data
+    const cookieStore = cookies()
+    const sessionToken = cookieStore.get('sessionToken')
+    const isAuthenticated = !!sessionToken
     return (
         <div className="px-2">
-            <ProductAddButton />
+            {isAuthenticated && <ProductAddButton />}
             <Table className="mt-2">
                 <TableCaption>Danh sách sản phẩm.</TableCaption>
                 <TableHeader>
@@ -31,7 +35,7 @@ export default async function ProductListPage() {
                         <TableHead className="text-center">Tên</TableHead>
                         <TableHead className="text-center">Giá</TableHead>
                         <TableHead className="text-center">Thời gian</TableHead>
-                        <TableHead className="text-center">Hành động</TableHead>
+                        {isAuthenticated && <TableHead className="text-center">Hành động</TableHead>}
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -44,7 +48,7 @@ export default async function ProductListPage() {
                             <TableCell className="text-center">{prod.name}</TableCell>
                             <TableCell className="text-center">{formatNumber(prod.price)} VNĐ</TableCell>
                             <TableCell className="text-center">{formatDate(prod.createdAt)}</TableCell>
-                            <TableCell className="text-center">
+                            {isAuthenticated && <TableCell className="text-center">
                                 <div className="flex justify-center gap-x-1">
                                     <Link href={`/products/${prod.id}`}>
                                         <Button variant={"secondary"} className="gap-x-1">
@@ -54,7 +58,7 @@ export default async function ProductListPage() {
                                     </Link>
                                     <DeleteProduct product={prod} />
                                 </div>
-                            </TableCell>
+                            </TableCell>}
                         </TableRow>
                     ))}
                 </TableBody>

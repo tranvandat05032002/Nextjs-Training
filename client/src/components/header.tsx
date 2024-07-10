@@ -1,18 +1,16 @@
+'use client'
 import React from 'react';
 import { ModeToggle } from './mode-toggle';
 import Link from 'next/link';
 import ButtonLogout from './button-logout';
-import { cookies } from 'next/headers';
-import accountApiRequest from '@/apiRequest/account';
+import { useAppContext } from '@/app/AppProvider';
+import { AccountResType } from '@/schemaValidations/account.schema';
 
-const Header = async () => {
-    const cookiesStore = cookies()
-    const sessionToken = cookiesStore.get('sessionToken')?.value
-    let user = null;
-    if (sessionToken) {
-        const data = await accountApiRequest.me(sessionToken)
-        user = data.payload.data
-    }
+const Header = ({
+    user
+}: {
+    user: AccountResType['data'] | null
+}) => {
     return (
         <div className='flex space-x-4'>
             <ul className='flex space-x-4'>

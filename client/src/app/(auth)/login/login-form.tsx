@@ -40,7 +40,7 @@ const LoginForm = () => {
             toast({
                 description: result.payload.message,
             })
-            router.push('/')
+            router.push('/me')
             router.refresh()
         } catch (error: any) {
             handleErrorApi({ error, setError: form.setError })
