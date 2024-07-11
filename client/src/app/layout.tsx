@@ -9,6 +9,7 @@ import { cookies } from "next/headers";
 import SlideSession from "@/components/slide-session";
 import { AccountResType } from "@/schemaValidations/account.schema";
 import accountApiRequest from "@/apiRequest/account";
+import { openGraphImage } from "./shared-metadata";
 
 const inter = Inter({
   subsets: ["vietnamese"],
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
     template: '%s | Meteor',
     default: 'Meteor'
   },
+  ...openGraphImage,
   description: 'Một trang web thương mại điện tử từ Trần Văn Đạt',
 };
 

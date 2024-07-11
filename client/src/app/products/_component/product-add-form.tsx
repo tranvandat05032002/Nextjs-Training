@@ -165,6 +165,7 @@ const ProductAddForm = ({ product }: { product?: Product }) => {
                             src={file ? URL.createObjectURL(file) : image}
                             width={128}
                             height={128}
+                            priority
                             alt='preview'
                             className='w-32 h-32 object-cover'
                         />

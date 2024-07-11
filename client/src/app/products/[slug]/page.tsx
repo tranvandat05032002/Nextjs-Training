@@ -3,6 +3,8 @@ import { Metadata, ResolvingMetadata } from 'next'
 import { cache } from 'react'
 import Image from 'next/image';
 import React from 'react';
+import envConfig from '@/config';
+import { openGraphImage } from '@/app/shared-metadata';
 type Props = {
     params: { slug: string }
 }
@@ -14,11 +16,25 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     // read route params
     const slug = params.slug
-    // fetch data
     const { payload } = await getDetails(Number(slug))
     const product = payload.data
+    const url = envConfig.NEXT_PUBLIC_URL + '/products' + product.id
+    // fetch data
     return {
-        title: product.name,
+        ...openGraphImage,
+        openGraph: {
+            title: product.name,
+            description: product.description,
+            url,
+            images: [
+                {
+                    url: product.image,
+                }
+            ],
+        },
+        alternates: {
+            canonical: url,
+        }
     }
 }
 
@@ -36,6 +52,7 @@ const ProductDetail = async ({ params }: Props) => {
                 <Image
                     src={product.image}
                     alt={product.name}
+                    priority
                     width={180}
                     height={180}
                     className='w-32 h-32 object-cover'

@@ -48,7 +48,7 @@ export default async function ProductListPage() {
                         <TableRow key={prod.id} className="cursor-default">
                             <TableCell className="font-medium text-center">{prod.id}</TableCell>
                             <TableCell className="text-center">
-                                <Image src={prod.image} className="rounded-sm mx-auto" alt={prod.description} width={50} height={50} />
+                                <Image src={prod.image} priority className="rounded-sm mx-auto" alt={prod.description} width={50} height={50} />
                             </TableCell>
                             <TableCell className="text-center"><Link href={`/products/${prod.id}`}>{prod.name}</Link></TableCell>
                             <TableCell className="text-center">{formatNumber(prod.price)} VNĐ</TableCell>

@@ -34,6 +34,7 @@ const ProductEdit = async ({ params }: Props) => {
                 <Image
                     src={product.image}
                     alt={product.name}
+                    priority
                     width={180}
                     height={180}
                     className='w-32 h-32 object-cover'
