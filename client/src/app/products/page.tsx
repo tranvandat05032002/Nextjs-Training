@@ -17,6 +17,11 @@ import Link from "next/link";
 import { formatDate, formatNumber } from "@/lib/utils";
 import DeleteProduct from "./_component/product-delete-button";
 import { cookies } from "next/headers";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+    title: 'Danh sách sản phẩm',
+    description: 'Danh sách sản phẩm của Meteor, Được tạo bởi Trần Văn Đạt'
+}
 export default async function ProductListPage() {
     const { payload } = await productApiRequest.getList()
     const productList = payload.data

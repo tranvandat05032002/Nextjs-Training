@@ -2,7 +2,11 @@ import { cookies } from 'next/headers';
 import React from 'react';
 import accountApiRequest from '@/apiRequest/account';
 import ProfileForm from './profile-form';
+import type { Metadata } from 'next';
 
+export const metadata: Metadata = {
+    title: 'Hồ sơ cá nhân'
+}
 const GetProfile = async () => {
     const sessionToken = cookies().get('sessionToken');
     const result = await accountApiRequest.me(sessionToken?.value ?? "")
