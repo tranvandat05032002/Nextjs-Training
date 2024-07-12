@@ -6,22 +6,24 @@ import ButtonLogout from './button-logout';
 import { useAppContext } from '@/app/AppProvider';
 import { AccountResType } from '@/schemaValidations/account.schema';
 import ModelSelectLangue from './select-box';
+import { useTranslations } from 'next-intl';
 
 const Header = ({
   user
 }: {
   user: AccountResType['data'] | null
 }) => {
+  const t = useTranslations('Navigation')
   return (
     <div className='flex space-x-4'>
       <ul className='flex space-x-4'>
         {user ? (
           <><li>
-            <Link href='/products'>Sản phẩm</Link>
+            <Link href='/products'>{t('product')}</Link>
           </li>
             <li>
               <Link href={'/me'}>
-                Xin chào <strong>{user.name}</strong>
+                {t('hello')} <strong>{user.name}</strong>
               </Link>
             </li>
 
@@ -32,10 +34,10 @@ const Header = ({
         ) : (
           <>
             <li>
-              <Link href='/login'>Đăng nhập</Link>
+              <Link href='/login'>{t('login')}</Link>
             </li>
             <li>
-              <Link href='/register'>Đăng ký</Link>
+              <Link href='/register'>{t('register')}</Link>
             </li>
           </>
         )}

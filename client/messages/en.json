@@ -1,0 +1,17 @@
+{
+  "LoginPage": {
+    "header_login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "btn_login": "Login"
+  },
+  "Navigation": {
+    "product": "Product",
+    "hello": "Hello",
+    "login": "Login",
+    "register": "Register"
+  },
+  "HomePage": {
+    "header": "Hello"
+  }
+}

@@ -1,16 +1,20 @@
 /** @type {import('next').NextConfig} */
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin();
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-    images: {
+  images: {
     remotePatterns: [
       {
         protocol: 'http',
         hostname: 'localhost',
-        port: '4000',
+        port: '4000'
         // pathname: '//**',
-      },
-    ],
-  },
+      }
+    ]
+  }
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
