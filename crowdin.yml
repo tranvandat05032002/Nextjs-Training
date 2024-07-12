@@ -1,0 +1,3 @@
+files:
+  - source: /client/messages/vi.json
+    translation: /%original_path%/%two_letters_code%.json
