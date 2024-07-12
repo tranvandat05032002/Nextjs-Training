@@ -1,0 +1,17 @@
+{
+  "LoginPage": {
+    "header_login": "Đăng nhập",
+    "email": "Tài khoản",
+    "password": "Mật khẩu",
+    "btn_login": "Đăng nhập"
+  },
+  "Navigation": {
+    "product": "Sản phẩm",
+    "hello": "Xin chào",
+    "login": "Đăng nhập",
+    "register": "Đăng ký"
+  },
+  "HomePage": {
+    "header": "Xin chào"
+  }
+}
