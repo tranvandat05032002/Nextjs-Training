@@ -1,4 +1,5 @@
 @baseUrl = http://127.0.0.1:4000
+@strapiBaseUrl = http://127.0.0.1:1337/api
 @sessionToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksInRva2VuVHlwZSI6InNlc3Npb25Ub2tlbiIsImlhdCI6MTcxOTk4MDM2MSwiZXhwIjoxNzUxNTE2MzYxfQ.E2xbUChNOxfh9cSzGAdaHAC8qlfSh4PRk5zVzCB6dnQ
 
 GET {{baseUrl}}/test HTTP/1.1
@@ -43,3 +44,6 @@ Authorization: Bearer BQDBNVufVG7_9T8wZjoGBD5vGNdQYrBdxkLlGzhjyoSOOU6_VOSxiPPMAL
 
 ###
 GET {{baseUrl}}/products HTTP/1.1
+
+### strapi request
+GET {{strapiBaseUrl}}/products/
