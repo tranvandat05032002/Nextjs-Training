@@ -1,7 +1,7 @@
 {
   "LoginPage": {
     "header_login": "Đăng nhập",
-    "email": "Email",
+    "email": "Tài khoản",
     "password": "Mật khẩu",
     "btn_login": "Đăng nhập"
   },
